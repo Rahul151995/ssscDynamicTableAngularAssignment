@@ -1,0 +1,74 @@
+<div class="table-responsive">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <ng-container *ngFor="let colName of option; let headingIndex=index">
+            <th *ngIf="colName.visible" [class]="colName.class">{{colName.colHeading}}
+              <i *ngIf="colName.sortingIcon" class="fa"
+                [ngClass]="{'fa-angle-down':colName.config.up, 'fa-angle-up': !colName.config.up}"
+                (click)="colName.config.up = !colName.config.up; actionListener($event,colName?.config,colName,headingIndex);"></i>
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rowData of tableData; let dataIndex = index">
+          <ng-container *ngFor="let opt of option">
+            <td  (click)="rowClick(rowData,opt)" *ngIf="opt.visible">
+              <ng-container *ngIf="opt.key != 'action' && opt.key != 'image' && !opt.type">
+                <p [ngClass]="{'cursor-pointer':opt.cursorVisible}">{{rowData[opt.key] }}
+                  <ng-container *ngIf="opt?.isInformationIcon">
+                    <div class="hover-icon">
+                      <img src="assets/svg/info.svg" alt="">
+                      <div class="hover-value" *ngIf="opt.hoverDataType == 'saleHistory'">
+                        <p>Ticket Price<span>60k</span> </p>
+                        <p>Discount<span>20k</span> </p>
+                        <p>Fee<span>15k</span> </p>
+                        <p>GST<span>18%</span> </p>
+                        <div class="net-bod"></div>
+                        <p>Net Collect <span>100k</span></p>
+                      </div>
+                      <div class="hover-value" *ngIf="opt.hoverDataType == 'eventCountSummary'">
+                        <p>Paid Events<span>{{rowData['paid_events_count']}}</span> </p>
+                        <p>Free Events<span>{{rowData['free_events_count']}}</span> </p>
+                        <p>Listed Events<span>{{rowData['listed_events_count']}}</span> </p>
+                      </div>
+                    </div>
+                  </ng-container>
+                </p>
+              </ng-container>
+              <ng-container *ngIf="opt.key != 'action' && opt.key != 'image' && opt.type == 'html'">
+                <div [innerHTML]="rowData[opt.key]"></div>
+              </ng-container>
+              <ng-container *ngIf="opt.key == 'action'">
+                <ng-container *ngFor="let d of opt.config; let i =index;">
+                  <a *ngIf="d.input == 'button'" (click)="actionListener($event, d,rowData,dataIndex)"
+                    class="downicon cursor-pointer" style="padding-right: 10px;">
+                    <i class="{{d.icon}}"></i> </a>
+                  <a *ngIf="d.input == 'toggle'" (click)="actionListener($event, d,rowData,dataIndex)"
+                    class="downicon cursor-pointer" style="padding-right: 10px;">
+                    <i class="{{rowData[d.dataKey] ? d.iconActive : d.iconInactive}}"
+                      [ngClass]="{'toggle-Active':rowData[d.dataKey],'toggle-Inactive':!rowData[d.dataKey]}"></i></a>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="opt.key == 'image'">
+                <ng-container>
+                  <div class="dp">
+                    <img _ngcontent-serverapp-c156="" alt="speaker" [src]="rowData[opt.key]">
+  
+                  </div>
+                </ng-container>
+              </ng-container>
+            </td>
+          </ng-container>
+        </tr>
+  
+        <tr *ngIf="!isArray(tableData) || isArray(tableData) && tableData.length == 0">
+          <td [attr.colspan]="option.length" style="padding-bottom: 0px;" class="text-center no">
+            No Record Found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

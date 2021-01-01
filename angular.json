@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "ssscDynamicTableAngularAssignment"
+  "defaultProject": "ssscDynamicTableAngularAssignment",
+  "cli": {
+    "analytics": "d8739d7e-c9aa-4d22-939a-0e8365c3b217"
+  }
 }
